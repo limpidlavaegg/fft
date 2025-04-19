@@ -42,6 +42,7 @@ public class fft {
             // Calc. twiddle factor: exp(-2im*pi*i/n)
             Complex factor = new Complex(-2.0);
             factor = factor.multiply(Math.PI).multiply(i).divide(n).exp();
+            System.out.println(factor.toString());
             // Front half of the result
             ret[i] = factor.multiply(evens[i]).add(odds[i]);
             // Back half of the result
@@ -64,7 +65,7 @@ public class fft {
 
         Complex[] res = fft(in);
         for (int i = 0; i < n; i++) {
-            System.out.println(res[i].toString());
+            // System.out.println(res[i].toString());
         }
     }
 }
