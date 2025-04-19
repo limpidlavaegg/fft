@@ -10,17 +10,20 @@ public class fft {
     public static Complex[] fft(Complex[] in) {
         // NOTE: in must be an even length
         int n = in.length;
-        // Base case: in contains just one element
+        // Base case: in contains just one element -> the result of the transform is the element itself
         if (n == 1) {
             return in;
         }
 
         // Split array into odd and even indices for divide and conquer
         int half_n = n / 2;
+        // Init arrays for storing values at the odd and even indices
         Complex[] odds = new Complex[half_n];
-        int odds_i = 0;
         Complex[] evens = new Complex[half_n];
+        // Counters to keep track of the cur index in odds and evens
+        int odds_i = 0;
         int evens_i = 0;
+        // Split in by iterating over all values, and storing into odds or evens depending on cur index
         for (int i = 0; i < n; i++) {
             if (i % 2 == 0) {
                 evens[evens_i] = in[i];
@@ -32,21 +35,21 @@ public class fft {
             }
         }
 
-        // Recursively calculate the DFT
+        // Recursively calculate the DFT on odds and evens separately
         odds = fft(odds);
         evens = fft(evens);
 
-        // Array for saving the results
+        // Merge the resultant transforms of odds and evens using trigonometric constant coefficients ("twiddle factors")
+        // Init array for saving the results
         Complex[] ret = new Complex[n];
         for (int i = 0; i < half_n; i++) {
             // Calc. twiddle factor: exp(-2im*pi*i/n)
-            Complex factor = new Complex(-2.0);
-            factor = factor.multiply(Math.PI).multiply(i).divide(n).exp();
-            System.out.println(factor.toString());
-            // Front half of the result
-            ret[i] = factor.multiply(evens[i]).add(odds[i]);
-            // Back half of the result
-            ret[i + half_n] = factor.multiply(evens[i]).subtract(odds[i]);
+            Complex factor = new Complex(0, (-2.0 * Math.PI * i) / n);
+            factor = factor.exp().multiply(odds[i]);
+            // Front half of the result: evens_i + exp(-2im*pi*i/n) * odds_i
+            ret[i] = evens[i].add(factor);
+            // Back half of the result: evens_i - exp(-2im*pi*i/n) * odds_i
+            ret[i + half_n] = evens[i].subtract(factor);
         }
         return ret;
     }
@@ -58,14 +61,16 @@ public class fft {
         // Number of input values to expect
         int n = Integer.parseInt(r.readLine());
 
+        // Init each input value as a complex number and save to an input vector
         Complex[] in = new Complex[n];
         for (int i = 0; i < n; i++) {
             in[i] = new Complex(Double.parseDouble(r.readLine()));
         }
 
+        // Calculate the FFT and print the results
         Complex[] res = fft(in);
         for (int i = 0; i < n; i++) {
-            // System.out.println(res[i].toString());
+            System.out.println(res[i].toString());
         }
     }
 }
