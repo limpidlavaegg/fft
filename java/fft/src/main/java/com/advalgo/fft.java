@@ -3,26 +3,6 @@ package com.advalgo;
 import org.apache.commons.math3.complex.*;
 
 public class fft {
-/*
-function cooley_tukey(x)
-    N = length(x)
-
-    if (N > 2)
-        x_odd = cooley_tukey(x[1:2:N])
-        x_even = cooley_tukey(x[2:2:N])
-    else
-        x_odd = x[1]
-        x_even = x[2]
-    end
-    n = 0:N-1
-    half = div(N,2)
-    factor = exp.(-2im*pi*n/N)
-    return vcat(x_odd .+ x_even .* factor[1:half],
-                x_odd .- x_even .* factor[1:half])
-
-end
-
-*/
 
     public static Complex[] fft(Complex[] in) {
         // NOTE: in must be an even length
@@ -72,7 +52,12 @@ end
     public static void main(String[] args) {
         Complex[] in = new Complex[8];
         for (int i = 0; i < 8; i++) {
-            in[i] = new Complex(0);
+            if (i % 2 == 0) {
+                in[i] = new Complex(1);
+            }
+            else {
+                in[i] = new Complex(-1);
+            }
         }
 
         Complex[] res = fft(in);
