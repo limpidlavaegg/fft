@@ -30,12 +30,22 @@ def fft(X: list[float]) -> list[float]:
     return Y
 
 def main():
-    X = [2*cos(x) + cos(2*x) for x in range(1024)]
-    Yfft = fft(X)
-    Ydft = dft(X)
+    # X = [2*cos(x) + cos(2*x) for x in range(1024)]
+    # Yfft = fft(X)
+    # Ydft = dft(X)
     # for i in range(len(X)):
     #     print(f"{Yfft[i].real}\t{Ydft[i].real}")
-    print(all([abs(Yfft[i] - Ydft[i]) <= 1e-5 for i in range(len(Yfft))]))
+    # print(all([abs(Yfft[i] - Ydft[i]) <= 1e-5 for i in range(len(Yfft))]))
+
+    n = int(input())
+    X = list()
+    for i in range(n):
+        X.append(float(input()))
+    
+    Y = fft(X)
+    for i in range(len(Y)):
+        print(f"({Y[i].real}, {Y[i].real})")
+        
 
 if __name__=='__main__':
     main()
