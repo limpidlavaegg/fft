@@ -1,5 +1,8 @@
 package com.advalgo;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import org.apache.commons.math3.complex.*;
 
 public class fft {
@@ -33,14 +36,12 @@ public class fft {
         odds = fft(odds);
         evens = fft(evens);
 
-        // Start calc. twiddle factor w/ constant -2im*pi
-        Complex factor = new Complex(-2.0);
-        factor = factor.multiply(Math.PI);
         // Array for saving the results
         Complex[] ret = new Complex[n];
         for (int i = 0; i < half_n; i++) {
-            // Finish calc. twiddle factor: exp(-2im*pi*i/n)
-            factor = factor.multiply(i).divide(n).exp();
+            // Calc. twiddle factor: exp(-2im*pi*i/n)
+            Complex factor = new Complex(-2.0);
+            factor = factor.multiply(Math.PI).multiply(i).divide(n).exp();
             // Front half of the result
             ret[i] = factor.multiply(evens[i]).add(odds[i]);
             // Back half of the result
@@ -49,19 +50,20 @@ public class fft {
         return ret;
     }
 
-    public static void main(String[] args) {
-        Complex[] in = new Complex[8];
-        for (int i = 0; i < 8; i++) {
-            if (i % 2 == 0) {
-                in[i] = new Complex(1);
-            }
-            else {
-                in[i] = new Complex(-1);
-            }
+    public static void main(String[] args) throws IOException {
+        // Set up to read input from command line
+        BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
+
+        // Number of input values to expect
+        int n = Integer.parseInt(r.readLine());
+
+        Complex[] in = new Complex[n];
+        for (int i = 0; i < n; i++) {
+            in[i] = new Complex(Double.parseDouble(r.readLine()));
         }
 
         Complex[] res = fft(in);
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < n; i++) {
             System.out.println(res[i].toString());
         }
     }
