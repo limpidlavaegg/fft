@@ -44,7 +44,7 @@ def main():
     
     Y = fft(X)
     for i in range(len(Y)):
-        print(f"({Y[i].real}, {Y[i].real})")
+        print(f"({Y[i].real}, {Y[i].imag})")
         
 
 if __name__=='__main__':
