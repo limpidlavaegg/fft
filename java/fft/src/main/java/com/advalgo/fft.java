@@ -42,7 +42,6 @@ end
             if (i % 2 == 0) {
                 evens[evens_i] = in[i];
                 evens_i++;
-                System.out.println(evens_i);
             }
             else {
                 odds[odds_i] = in[i];
@@ -62,26 +61,22 @@ end
         for (int i = 0; i < half_n; i++) {
             // Finish calc. twiddle factor: exp(-2im*pi*i/n)
             factor = factor.multiply(i).divide(n).exp();
-            if (i < half_n) {
-                // Front half of the result
-                ret[i] = factor.multiply(evens[i]).add(odds[i]);
-            }
-            else {
-                // Back half of the result
-                ret[i] = factor.multiply(evens[i]).subtract(odds[i]);
-            }
+            // Front half of the result
+            ret[i] = factor.multiply(evens[i]).add(odds[i]);
+            // Back half of the result
+            ret[i + half_n] = factor.multiply(evens[i]).subtract(odds[i]);
         }
         return ret;
     }
 
     public static void main(String[] args) {
-        Complex[] in = new Complex[10];
-        for (int i = 0; i < 10; i++) {
+        Complex[] in = new Complex[8];
+        for (int i = 0; i < 8; i++) {
             in[i] = new Complex(0);
         }
 
         Complex[] res = fft(in);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 8; i++) {
             System.out.println(res[i].toString());
         }
     }
