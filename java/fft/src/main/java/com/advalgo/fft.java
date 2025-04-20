@@ -70,7 +70,8 @@ public class fft {
         // Calculate the FFT and print the results
         Complex[] res = fft(in);
         for (int i = 0; i < n; i++) {
-            System.out.println(res[i].toString());
+            // System.out.println(res[i].toString());
+            System.out.printf("(%.5f, %.5f)\n", res[i].getReal(), res[i].getImaginary());
         }
     }
 }
