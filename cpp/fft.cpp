@@ -43,27 +43,32 @@ vector<complex<double>> fft(vector<complex<double>> in) {
     vector<complex<double>> ret(n);
     for (int i = 0; i < half_n; i++) {
         // Calc. twiddle factor: exp(-2im*pi*i/n)
+        // Here, the complex number that forms the baseline for the factor has no rational component and only an imaginary component
         complex<double> factor(0, (-2.0 * M_PI * i) / n);
-        factor = exp(factor) * odds[i];
+        factor = exp(factor);
         // Front half of the result: evens_i + exp(-2im*pi*i/n) * odds_i
-        ret[i] = evens[i] + factor;
+        ret[i] = evens[i] + (factor * odds[i]);
         // Back half of the result: evens_i - exp(-2im*pi*i/n) * odds_i
-        ret[i + half_n] = evens[i] - factor;
+        ret[i + half_n] = evens[i] - (factor * odds[i]);
     }
     return ret;
 }
 
 int main() {
+    // Read in the size of the input
     int n = -1;
     cin >> n;
 
+    // Init vector to hold input and fill it with complex numbers as values are provided
     vector<complex<double>> in(n);
     for (int i = 0; i < n; i++) {
         double val = -1.0;
         cin >> val;
+        // The value makes up the rational component of the complex number, imaginary component is 0
         in[i] = complex<double>(val, 0.0);
     }
 
+    // Calculate the FFT and print results in a standardized format
     vector<complex<double>> out = fft(in);
     for (int i = 0; i < n; i++) {
         cout << fixed << setprecision(5) << "(" << out[i].real() << ", " << out[i].imag() << ")\n";
