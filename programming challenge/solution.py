@@ -2,18 +2,18 @@ import math
 import numpy as np
 
 note_dict = {
-    261.626 : "C",
-    277.183 : "C#",
-    293.665 : "D",
-    311.127 : "D#",
-    329.628 : "E",
-    349.228 : "F",
-    369.994 : "F#",
-    391.995 : "G",
-    415.305 : "G#",
-    440.000 : "A",
-    466.164 : "A#",
-    493.883 : "B",
+    261.626: "C",
+    277.183: "C#",
+    293.665: "D",
+    311.127: "D#",
+    329.628: "E",
+    349.228: "F",
+    369.994: "F#",
+    391.995: "G",
+    415.305: "G#",
+    440.000: "A",
+    466.164: "A#",
+    493.883: "B",
 }
 
 note_frequencies = [
@@ -78,6 +78,7 @@ def get_note_names(frequencies):
         note_names.append(note_dict[freq])
     return note_names
 
+
 def is_root_pos(frequencies):
     tolerance = 0.03 # might need some tolerance in ratios between notes - may need to adjust
     first_interval = frequencies[1] / frequencies[0]
@@ -102,8 +103,8 @@ def is_root_pos(frequencies):
 
 
 def get_chord_type(frequencies):
-    #TODO implement this
-    #TODO ensure this handles enharmonic equivalents
+    # TODO implement this
+    # TODO ensure this handles enharmonic equivalents
     while not is_root_pos(frequencies)[0] == "T":
         frequencies[0] *= 2
         frequencies.sort() # Make sure this is correct order
@@ -119,16 +120,17 @@ def get_chord_inversion(root_pos_notes, bass_note):
     return -1
 
 
-
 # TODO read in waveforms, turn into loop to handle multiple
-#waveform = [1,0,-1,0,1,0]
-#fft_result = fft(waveform)
-#frequencies = find_peaks(fft_result)
+# waveform = [1,0,-1,0,1,0]
+# fft_result = fft(waveform)
+# frequencies = find_peaks(fft_result)
 
 # Above is fft code, below is chord determination code
 
-frequencies = [440, 440*min_third, 440*min_third, 440*maj_third] # Should be detected as ACE A min 0
+frequencies = [440, 440*min_third, 440*min_third*maj_third]  # Should be detected as ACE A min 0
 exact_frequencies = get_exact_freqs(frequencies)
+
+print(exact_frequencies)
 
 notes = get_note_names(exact_frequencies) # only used to print out in ascending freq order
 bass_note = notes[0]
@@ -139,5 +141,7 @@ root_pos_notes = get_note_names(root_pos_exact_freqs)
 inversion = get_chord_inversion(bass_note, root)
 
 # Print out: notes, root, chord type, inversion
-
-# TODO print results
+print(notes)
+print(root)
+print(chord_type)
+print(inversion)
