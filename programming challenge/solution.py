@@ -112,7 +112,7 @@ def get_chord_type(frequencies):
     return root_note, is_root_pos(frequencies)[1], frequencies # returns frequencies sorted
 
 
-def get_chord_inversion(root_pos_notes, bass_note):
+def get_chord_inversion(bass_note, root_pos_notes):
     # TODO make this work!
     for i in range(len(root_pos_notes)):
         if root_pos_notes[i] == bass_note:
@@ -138,7 +138,7 @@ bass_note = notes[0]
 root, chord_type, root_pos_freqs = get_chord_type(exact_frequencies)
 root_pos_exact_freqs = get_exact_freqs(root_pos_freqs)
 root_pos_notes = get_note_names(root_pos_exact_freqs)
-inversion = get_chord_inversion(bass_note, root)
+inversion = get_chord_inversion(bass_note, root_pos_notes)
 
 # Print out: notes, root, chord type, inversion
 print(notes)
