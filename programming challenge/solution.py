@@ -1,8 +1,11 @@
 import math
 import sys
+import time
+
 import numpy as np
 from math import sin, cos, pi
 from scipy.signal import find_peaks
+import matplotlib.pyplot as plt
 
 # Dictionary corresponding note names to frequencies. Only need to store one octave.
 note_dict = {
@@ -77,7 +80,8 @@ def fft_freq_bins(num_samples, sample_interval):
 
 # Find indices of peaks in FFT output.
 def fft_find_peaks(signal):
-    peak_indices, _ = find_peaks(signal)  # maybe try to implement this? probably not worth it
+    # TODO tune this
+    peak_indices, _ = find_peaks(signal, height=100)  # maybe try to implement this? probably not worth it
     return peak_indices
 
 
@@ -148,6 +152,8 @@ def get_chord_type(frequencies):
     while not is_root_pos(frequencies)[0] == "T":
         frequencies[0] *= 2
         frequencies.sort() # Make sure this is correct order
+        print(frequencies)
+        time.sleep(0.5)
     root_note = note_dict[find_closest(frequencies[0])]
     return root_note, is_root_pos(frequencies)[1], frequencies # returns frequencies sorted
 
@@ -173,7 +179,7 @@ for i in range(num_chords):
     input_line = sys.stdin.readline().strip().split(" ")
     waveform = [float(s) for s in input_line]
 
-    print(waveform)
+    # print(waveform)
 
     # Get FFT of waveform and take absolute value of complex output to get frequency magnitudes.
     fft_result = np.abs(fft(waveform))
@@ -183,6 +189,9 @@ for i in range(num_chords):
     freq_bins = fft_freq_bins(len(pos_result), duration/num_samples)  # sample interval = duration / num_samples
     freq_bins_temp = np.fft.fftfreq(len(fft_result), duration/num_samples)
     freq_bins_temp = freq_bins_temp[:len(freq_bins_temp)//2]
+
+    plt.plot(freq_bins_temp, pos_result)
+    plt.show()
 
     # Get indices of peaks in FFT output, then use to find peak frequencies.
     peak_indices = fft_find_peaks(pos_result)

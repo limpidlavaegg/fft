@@ -17,20 +17,24 @@ def waveform_generator(frequencies, num_samples, duration):
     return result
 
 
+# Note to self: need to choose duration and number of samples VERY carefully
+# Need enough duration to capture full waveform shape (periodicity)
+# Need enough samples for high resolution capture of waveform
+
 # list of frequencies in Hz of sine waves to add together and sample
 # For example, [60, 90] would generate the sum of sin(2pi * 60 * t) and sin(2pi * 90 * t), 60Hz and 90Hz waves
-my_frequencies = [440.0, 523.251, 659.255]
+my_frequencies = [261.626, 329.628, 391.995]
 
 # Number of evenly spaced samples to take of the composite waveform over the chosen time interval
 # For example, 100 samples over a 10-second interval would result in 10 samples per second
 # This number should be quite high to get appropriate waveform resolution
 # It should also be higher the greater the frequency or complexity of the waveform
-my_num_samples = 512
+my_num_samples = 1024
 
 # Duration to sample the waveform
 # For high frequency waveforms, this can be quite short
 # for very low frequency waveforms, may want to sample a longer duration to capture periodicity
-my_duration = 0.2
+my_duration = 0.1
 
 # Get resultant samples of waveform from above parameters
 
