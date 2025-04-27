@@ -59,6 +59,12 @@ public class Solution {
         return (n > 0) && ((n & (n-1)) == 0);
     }
 
+    static String getNote(double freq) {
+        String[] notes = {"A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"};
+        int num = Math.round(12*Math.log(freq / 55)/Math.log(2)) % 12;
+        return notes[num];
+    }
+
     public static void main(String[] args) {
         try {
             BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
@@ -82,7 +88,7 @@ public class Solution {
                     nData[j] = new Complex(Double.parseDouble(sData[j]));
                 }
                 Complex[] trans = fft(nData);
-                
+
             }    
         } catch (Exception e) {
             System.err.println(e.getMessage());

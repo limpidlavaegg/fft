@@ -7,8 +7,6 @@ import org.apache.commons.math3.complex.*;
 
 public class fft {
 
-    static final Map<
-
     public static Complex[] fft(Complex[] in) {
         // NOTE: in must be an even length
         int n = in.length;
