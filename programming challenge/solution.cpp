@@ -199,6 +199,37 @@ int main() {
         vector<complex<double>> fftResult = fft(waveform);
 
         vector<double> realResult = abs(fftResult);
+        int mid = realResult.size() / 2;
+        vector<double> posResult(realResult.begin(), realResult.begin() + mid);
+        vector<double> freqBins = {}; //TODO implement this
+
+        vector<int> peakIndices = fftFindPeaks(posResult);
+        vector<double> peakFrequencies;
+        for (int i = 0; i < peakIndices.size(); i++) {
+            peakFrequencies.push_back(posResult[peakIndices[i]]);
+        }
+
+        // ----------------------------------------------------
+        // Above is fft code, below is chord determination code
+        // ----------------------------------------------------
+
+        vector<double> exactFrequencies = getExactFreqs(peakFrequencies);
+        vector<string> notes = getNoteNames(exactFrequencies);
+
+        pair<pair<string, string>, vector<double>> chordTypeRet = getChordType(exactFrequencies);
+        string rootNote = chordTypeRet.first.first;
+        string chordType = chordTypeRet.first.second;
+        vector<double> rootPosExactFreqs = getExactFreqs(chordTypeRet.second);
+        vector<string> rootPosNotes = getNoteNames(rootPosExactFreqs);
+        int inversion = getChordInversion(notes[0], rootPosNotes);
+
+        // Print results.
+        for (string note : notes) {
+            printf("%s ", note.c_str());
+        }
+        printf("\n%s %s %d\n", rootNote.c_str(), chordType.c_str(), inversion);
+
+
     }
 
     return 0;
