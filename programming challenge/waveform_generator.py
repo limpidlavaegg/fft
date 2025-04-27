@@ -35,12 +35,13 @@ my_duration = 0.2
 # Get resultant samples of waveform from above parameters
 
 my_result = waveform_generator(my_frequencies, my_num_samples, my_duration)
-print(my_result)
+# print(my_result)
 
-"""
+
 for sample in my_result:
     print(f"{sample:.4f}", end=" ")
 
+"""
 # Plot results
 plt.plot(np.arange(0, my_duration, my_duration / my_num_samples), my_result)
 plt.show()
