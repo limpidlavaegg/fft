@@ -3,9 +3,33 @@
 #include <string>
 #include <cstdio>
 #include <math.h>
+#include <cmath>
 #include <iomanip>
 #include <bits/stdc++.h>
 using namespace std;
+
+// Dictionary corresponding note names to frequencies. Only need to store one octave.
+vector<pair<double, string>> note_dict = {
+    {261.626, "C"},
+    {277.183, "C#"},
+    {293.665, "D"},
+    {311.127, "D#"},
+    {329.628, "E"},
+    {349.228, "F"},
+    {369.994, "F#"},
+    {391.995, "G"},
+    {415.305, "G#"},
+    {440.000, "A"},
+    {466.164, "A#"},
+    {493.883, "B"}
+};
+
+// Defines frequency range a note must fall within before lookup in the list/dict.
+double min_comp_freq = 255.0;
+double max_comp_freq = 505.0;
+
+double min_third = pow(2.0, 3.0/12.0);
+double maj_third = pow(2.0, 4.0/12.0);
 
 vector<complex<double>> fft(vector<complex<double>> in) {
     int n = in.size();
@@ -54,6 +78,10 @@ vector<complex<double>> fft(vector<complex<double>> in) {
     return ret;
 }
 
+vector<int> fft_find_peaks(vector<double> signal) {
+    // TODO - find peaks in signal. Find local maxima with min threshold?
+}
+
 
 int main() {
 
@@ -79,6 +107,8 @@ int main() {
 
         // Compute FFT of waveform
         vector<complex<double>> fftResult = fft(waveform);
+
+        vector<double> realResult = abs(fftResult);
     }
 
     return 0;
