@@ -6,10 +6,11 @@
 #include <cmath>
 #include <iomanip>
 #include <bits/stdc++.h>
+
 using namespace std;
 
 // Dictionary corresponding note names to frequencies. Only need to store one octave.
-vector<pair<double, string>> note_dict = {
+vector<pair<double, string>> noteDict = {
     {261.626, "C"},
     {277.183, "C#"},
     {293.665, "D"},
@@ -25,11 +26,11 @@ vector<pair<double, string>> note_dict = {
 };
 
 // Defines frequency range a note must fall within before lookup in the list/dict.
-double min_comp_freq = 255.0;
-double max_comp_freq = 505.0;
+double minCompFreq = 255.0;
+double maxCompFreq = 505.0;
 
-double min_third = pow(2.0, 3.0/12.0);
-double maj_third = pow(2.0, 4.0/12.0);
+double minThird = pow(2.0, 3.0/12.0);
+double majThird = pow(2.0, 4.0/12.0);
 
 vector<complex<double>> fft(vector<complex<double>> in) {
     int n = in.size();
@@ -78,8 +79,97 @@ vector<complex<double>> fft(vector<complex<double>> in) {
     return ret;
 }
 
-vector<int> fft_find_peaks(vector<double> signal) {
+vector<int> fftFindPeaks(vector<double> signal) {
     // TODO - find peaks in signal. Find local maxima with min threshold?
+}
+
+double findClosest(double freq) {
+    while (freq < minCompFreq) {
+        freq *= 2;
+    }
+    while (freq > maxCompFreq) {
+        freq /= 2;
+    }
+
+    double closestFreq = noteDict[0].first;
+    double minDist = abs(noteDict[0].first - freq);
+    for (int i = 0; i < noteDict.size(); i++) {
+        double dist = abs(noteDict[i].first - freq);
+        if (dist < minDist) {
+            minDist = dist;
+            closestFreq = noteDict[i].first;
+        }
+    }
+    return closestFreq;
+}
+
+vector<double> getExactFreqs(vector<double> frequencies) {
+    vector<double> exactFrequencies = {};
+    for (double freq : frequencies) {
+        exactFrequencies.push_back(findClosest(freq));
+    }
+    return exactFrequencies;
+}
+
+vector<string> getNoteNames(vector<double> frequencies) {
+    vector<string> noteNames = {};
+    for (double freq : frequencies) {
+        for (int i = 0; i < noteDict.size(); i++) {
+            if (noteDict[i].first == freq) {
+                noteNames.push_back(noteDict[i].second);
+                break;
+            }
+        }
+    }
+    return noteNames;
+}
+
+pair<string, string> isRootPos(vector<double> frequencies) {
+    double tolerance = 0.03;
+    double firstInterval = frequencies[1] / frequencies[0];
+    double secondInterval = frequencies[2] / frequencies[1];
+    bool int1IsMinThird = abs(firstInterval - minThird) < tolerance;
+    bool int2IsMinThird = abs(secondInterval - minThird) < tolerance;
+    bool int1IsMajThird = abs(firstInterval - majThird) < tolerance;
+    bool int2IsMajThird = abs(secondInterval - majThird) < tolerance;
+    bool isRootPos = (int1IsMajThird or int1IsMinThird) and (int2IsMajThird or int2IsMinThird);
+    if (isRootPos) {
+        if (int1IsMajThird && int2IsMinThird) {
+            return {"T", "maj"};
+        }
+        if (int1IsMinThird && int2IsMajThird) {
+            return {"T", "min"};
+        }
+        if (int1IsMinThird && int2IsMinThird) {
+            return {"T", "dim"};
+        }
+    }
+    return {"F", "n/a"};
+}
+
+pair<pair<string, string>, vector<double>> getChordType(vector<double> frequencies) {
+    while (isRootPos(frequencies).first != "T") {
+        frequencies[0] *= 2;
+        sort(frequencies.begin(), frequencies.end());
+    }
+    double rootFreq = findClosest(frequencies[0]);
+    string rootNote;
+    for (int i = 0; i < noteDict.size(); i++) {
+        if (noteDict[i].first == rootFreq) {
+            rootNote = noteDict[i].second;
+            break;
+        }
+    }
+    return {{rootNote, isRootPos(frequencies).second}, frequencies};
+}
+
+int getChordInversion(string bassNote, vector<string> rootPosNotes) {
+    for (int i = 0; i < rootPosNotes.size(); i++) {
+        if (rootPosNotes[i] == bassNote) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 
