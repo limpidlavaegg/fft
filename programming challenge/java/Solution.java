@@ -1,15 +1,14 @@
-package com.advalgo;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Executable;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.apache.commons.math3.complex.*;
 
-public class fft {
+public class Solution {
 
-    static final Map<
-
-    public static Complex[] fft(Complex[] in) {
+    static Complex[] fft(Complex[] in) {
         // NOTE: in must be an even length
         int n = in.length;
         // Base case: in contains just one element -> the result of the transform is the element itself
@@ -56,25 +55,38 @@ public class fft {
         return ret;
     }
 
-    public static void main(String[] args) throws IOException {
-        // Set up to read input from command line
-        BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
+    static boolean isPowerOfTwo(int n) {
+        return (n > 0) && ((n & (n-1)) == 0);
+    }
 
-        // Number of input values to expect
-        int n = Integer.parseInt(r.readLine());
-
-        // Init each input value as a complex number and save to an input vector
-        Complex[] in = new Complex[n];
-        for (int i = 0; i < n; i++) {
-            in[i] = new Complex(Double.parseDouble(r.readLine()));
-        }
-
-        // Calculate the FFT and print the results
-        Complex[] res = fft(in);
-        for (int i = 0; i < n; i++) {
-            // System.out.println(res[i].toString());
-            System.out.printf("(%.5f, %.5f)\n", res[i].getReal(), res[i].getImaginary());
+    public static void main(String[] args) {
+        try {
+            BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
+            String[] params = r.readLine().split(" ");
+            if (params.length != 3) {
+                throw new Exception("First line should have 3 integer arguments");
+            }
+            int n = Integer.parseInt(params[0]);
+            int m = Integer.parseInt(params[1]);
+            int t = Integer.parseInt(params[2]);
+            if (!isPowerOfTwo(m)) {
+                throw new Exception("Second argument needs to be power of 2");
+            }
+            for (int i = 0; i < n; i++) {
+                String[] sData = r.readLine().split(" ");
+                if (sData.length != m) {
+                    throw new Exception("Line " + i + " should have " + m + " arguments");
+                }
+                Complex[] nData = new Complex[m];
+                for (int j = 0; j < m; j++) {
+                    nData[j] = new Complex(Double.parseDouble(sData[j]));
+                }
+                Complex[] trans = fft(nData);
+                
+            }    
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            System.exit(-1);
         }
     }
 }
-
