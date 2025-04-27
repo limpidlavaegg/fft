@@ -57,5 +57,29 @@ vector<complex<double>> fft(vector<complex<double>> in) {
 
 int main() {
 
+    int numChords;
+    int numSamples;
+    double duration;
+
+    // Read in main parameters
+    cin >> numChords;
+    cin >> numSamples;
+    cin >> duration;
+
+    // Main loop
+    for (int i = 0; i < numChords; i++) {
+        vector<complex<double>> waveform(numSamples);
+        double sample;
+
+        // Read samples in, convert to complex numbers, and add to waveform list
+        for (int j = 0; j < numSamples; j++) {
+            cin >> sample;
+            waveform[j] = complex<double>(sample, 0);
+        }
+
+        // Compute FFT of waveform
+        vector<complex<double>> fftResult = fft(waveform);
+    }
+
     return 0;
 }
