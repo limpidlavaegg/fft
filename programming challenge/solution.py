@@ -71,13 +71,6 @@ def fft(X: list[float]) -> list[float]:
     return Y
 
 
-# Given number of samples and sample duration, calculates frequency bins for FFT output.
-def fft_freq_bins(num_samples, sample_interval):
-    # TODO fix this (or just use existing implementation)
-    result = np.arange(0, num_samples, sample_interval)
-    return result
-
-
 # Find indices of peaks in FFT output.
 def fft_find_peaks(signal):
     # TODO tune this
@@ -151,11 +144,9 @@ def is_root_pos(frequencies):
 def get_chord_type(frequencies):
     while not is_root_pos(frequencies)[0] == "T":
         frequencies[0] *= 2
-        frequencies.sort() # Make sure this is correct order
-        print(frequencies)
-        time.sleep(0.5)
+        frequencies.sort()
     root_note = note_dict[find_closest(frequencies[0])]
-    return root_note, is_root_pos(frequencies)[1], frequencies # returns frequencies sorted
+    return root_note, is_root_pos(frequencies)[1], frequencies  # returns frequencies sorted
 
 
 # Given bass (lowest) note of a chord and the notes in root position, determine the chord inversion.
@@ -186,28 +177,32 @@ for i in range(num_chords):
     pos_result = fft_result[:len(fft_result)//2]  # Only the first half of the output corresponds to real frequencies
 
     # Calculate frequency bins to correspond indices of peaks in FFT output to frequencies in Hz.
-    freq_bins = fft_freq_bins(len(pos_result), duration/num_samples)  # sample interval = duration / num_samples
-    freq_bins_temp = np.fft.fftfreq(len(fft_result), duration/num_samples)
-    freq_bins_temp = freq_bins_temp[:len(freq_bins_temp)//2]
+    freq_bins = np.fft.fftfreq(len(fft_result), duration/num_samples)  # sample interval = duration / num_samples
+    freq_bins = freq_bins[:len(freq_bins)//2]
 
-    plt.plot(freq_bins_temp, pos_result)
+    """
+    plt.plot(freq_bins, pos_result)
     plt.show()
+    """
 
     # Get indices of peaks in FFT output, then use to find peak frequencies.
     peak_indices = fft_find_peaks(pos_result)
-    peak_frequencies = freq_bins_temp[peak_indices]
+    peak_frequencies = freq_bins[peak_indices]
 
-    print(peak_frequencies)
+    # print(peak_frequencies)
 
     if len(peak_frequencies) != 3:
-        peak_frequencies = np.delete(peak_frequencies, 0)
+        print("Error: more/less than 3 peaks detected")
+        exit(1)
 
+    # ----------------------------------------------------
     # Above is fft code, below is chord determination code
+    # ----------------------------------------------------
 
     # Correct to exact frequencies to account for frequency bin variation.
     exact_frequencies = get_exact_freqs(peak_frequencies)
 
-    print(exact_frequencies)
+    # print(exact_frequencies)
 
     # Get note names. Will be in ascending order of frequency.
     notes = get_note_names(exact_frequencies)
@@ -224,7 +219,9 @@ for i in range(num_chords):
     inversion = get_chord_inversion(bass_note, root_pos_notes)
 
     # Print out: notes (in ascending frequency order), root, chord type, inversion
-    print(notes)
-    print(root)
-    print(chord_type)
-    print(inversion)
+    for note in notes:
+        print(note, end=" ")
+    print()
+    print(root, end=" ")
+    print(chord_type, end=" ")
+    print(inversion, end=" ")

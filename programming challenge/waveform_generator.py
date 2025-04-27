@@ -23,7 +23,7 @@ def waveform_generator(frequencies, num_samples, duration):
 
 # list of frequencies in Hz of sine waves to add together and sample
 # For example, [60, 90] would generate the sum of sin(2pi * 60 * t) and sin(2pi * 90 * t), 60Hz and 90Hz waves
-my_frequencies = [261.626, 329.628, 391.995]
+my_frequencies = [415.305, 523.251, 698.457]
 
 # Number of evenly spaced samples to take of the composite waveform over the chosen time interval
 # For example, 100 samples over a 10-second interval would result in 10 samples per second
