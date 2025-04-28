@@ -8,6 +8,16 @@ import org.apache.commons.math3.complex.*;
 
 public class Solution {
 
+    static String[] noteNames = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+    static double[] noteFreqs = {261.626, 277.183, 293.665, 311.127, 329.628, 349.228,
+                                369.994, 391.995, 415.305, 440.000, 466.164, 493.883};
+
+    static double minCompFreq = 255.0;
+    static double maxCompFreq = 505.0;
+
+    static double minThird = pow(2.0, 3.0/12.0);
+    static double majThird = pow(2.0, 4.0/12.0);
+
     static Complex[] fft(Complex[] in) {
         // NOTE: in must be an even length
         int n = in.length;
@@ -88,6 +98,9 @@ public class Solution {
                     nData[j] = new Complex(Double.parseDouble(sData[j]));
                 }
                 Complex[] trans = fft(nData);
+
+
+
 
             }    
         } catch (Exception e) {
