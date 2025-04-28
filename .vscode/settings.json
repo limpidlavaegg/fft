@@ -1,4 +1,9 @@
 {
     "java.debug.settings.onBuildFailureProceed": true,
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "files.associations": {
+        "iomanip": "cpp",
+        "iostream": "cpp",
+        "cstdio": "cpp"
+    }
 }
