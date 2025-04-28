@@ -48,7 +48,7 @@ waveform_list = []
 
 # waveform_list.append([1108.731, 1661.219, 2793.826])
 
-num_waveforms = 100
+num_waveforms = 1000
 for i in range(num_waveforms):
     root = note_frequencies[random.randint(0, 11)] # get random root
     waveform_list.append([root, root * maj_third, root * min_third * maj_third]) # major chord from root
@@ -71,7 +71,7 @@ result_list = []
 for freqs in waveform_list:
     result_list.append(waveform_generator(freqs, my_num_samples, my_duration))
 
-with open('testcases/test.in.15', 'w') as f:
+with open('testcases/test.in.20', 'w') as f:
     f.write(f"{len(result_list)} {my_num_samples} {my_duration:.1f}\n")
     for result in result_list:
         for sample in result:
