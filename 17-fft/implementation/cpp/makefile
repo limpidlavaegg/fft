@@ -5,7 +5,7 @@ run : a.out
 	./a.out
 
 test : a.out
-	./a.out < ../io/sample.in.1 > output_alternating.txt
-	./a.out < ../io/sample.in.2 > output_ones.txt
-	./a.out < ../io/sample.in.3 > output_zeros.txt
-	./a.out < ../io/sample.in.4 > output_freq_data.txt
+	./a.out < ../io/sample.in.1 > output_1.txt
+	./a.out < ../io/sample.in.2 > output_2.txt
+	./a.out < ../io/sample.in.3 > output_3.txt
+	./a.out < ../io/sample.in.4 > output_4.txt
