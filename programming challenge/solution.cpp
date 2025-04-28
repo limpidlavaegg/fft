@@ -93,7 +93,7 @@ vector<int> fftFindPeaks(vector<double> signal, int threshold) {
 vector<double> getFreqBins(int numSamples, double sampleInterval) {
     vector<double> freqBins(numSamples);
     for (int i = 0; i < numSamples; i++) {
-        freqBins[i] = i / (numSamples * sampleInterval); //TODO make sure this is correct
+        freqBins[i] = i / (numSamples * sampleInterval);
     }
     return freqBins;
 }
@@ -210,16 +210,21 @@ int main() {
             waveform[j] = complex<double>(sample, 0);
         }
 
+        printf("Read in waveform %d", i);
+
         // Compute FFT of waveform
         vector<complex<double>> fftResult = fft(waveform);
 
-        vector<double> realResult = abs(fftResult); //TODO this may not work
+        vector<double> realResult;
+        for(complex<double> z : fftResult) {
+            realResult.push_back(abs(z));
+        }
         int mid = realResult.size() / 2;
         vector<double> posResult(realResult.begin(), realResult.begin() + mid);
         vector<double> freqBins = getFreqBins(numSamples, duration/numSamples);
         vector<double> posFreqBins(freqBins.begin(),freqBins.begin() + mid);
 
-        vector<int> peakIndices = fftFindPeaks(posResult, 100); // TODO adjust threshold
+        vector<int> peakIndices = fftFindPeaks(posResult, 100);
         vector<double> peakFrequencies;
         for (int k = 0; k < peakIndices.size(); k++) {
             peakFrequencies.push_back(posFreqBins[peakIndices[k]]);
@@ -244,7 +249,6 @@ int main() {
             printf("%s ", note.c_str());
         }
         printf("\n%s %s %d\n", rootNote.c_str(), chordType.c_str(), inversion);
-
 
     }
 
