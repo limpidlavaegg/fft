@@ -25,8 +25,7 @@ waveform_list = []
 
 # lists of frequencies in Hz of sine waves to add together and sample
 # For example, [60, 90] would generate the sum of sin(2pi * 60 * t) and sin(2pi * 90 * t), 60Hz and 90Hz waves
-waveform_list.append([415.305, 523.251, 698.457])
-waveform_list.append([100, 200, 300])
+waveform_list.append([220.0, 261.626, 329.628])
 
 # Number of evenly spaced samples to take of the composite waveform over the chosen time interval
 # For example, 100 samples over a 10-second interval would result in 10 samples per second
