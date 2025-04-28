@@ -236,3 +236,4 @@ for i in range(num_chords):
     print(root, end=" ")
     print(chord_type, end=" ")
     print(inversion, end=" ")
+    print()
