@@ -21,9 +21,12 @@ def waveform_generator(frequencies, num_samples, duration):
 # Need enough duration to capture full waveform shape (periodicity)
 # Need enough samples for high resolution capture of waveform
 
-# list of frequencies in Hz of sine waves to add together and sample
+waveform_list = []
+
+# lists of frequencies in Hz of sine waves to add together and sample
 # For example, [60, 90] would generate the sum of sin(2pi * 60 * t) and sin(2pi * 90 * t), 60Hz and 90Hz waves
-my_frequencies = [415.305, 523.251, 698.457]
+waveform_list.append([415.305, 523.251, 698.457])
+waveform_list.append([100, 200, 300])
 
 # Number of evenly spaced samples to take of the composite waveform over the chosen time interval
 # For example, 100 samples over a 10-second interval would result in 10 samples per second
@@ -38,12 +41,16 @@ my_duration = 0.1
 
 # Get resultant samples of waveform from above parameters
 
-my_result = waveform_generator(my_frequencies, my_num_samples, my_duration)
-# print(my_result)
+result_list = []
+for freqs in waveform_list:
+    result_list.append(waveform_generator(freqs, my_num_samples, my_duration))
 
-
-for sample in my_result:
-    print(f"{sample:.4f}", end=" ")
+with open('testcases/test.in.2', 'w') as f:
+    f.write(f"{len(result_list)} {my_num_samples} {my_duration:.1f}\n")
+    for result in result_list:
+        for sample in result:
+            f.write(f"{sample:.4f} ")
+        f.write("\n")
 
 """
 # Plot results
