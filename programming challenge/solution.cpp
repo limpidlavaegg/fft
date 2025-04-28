@@ -79,8 +79,23 @@ vector<complex<double>> fft(vector<complex<double>> in) {
     return ret;
 }
 
-vector<int> fftFindPeaks(vector<double> signal) {
-    // TODO - find peaks in signal. Find local maxima with min threshold?
+vector<int> fftFindPeaks(vector<double> signal, int threshold) {
+    // TODO - does this work?
+    vector<int> peaks;
+    for (int i = 1; i < signal.size() - 1; i++) {
+        if (signal[i] > signal[i - 1] && signal[i] > signal[i + 1] && signal[i] > threshold) {
+            peaks.push_back(i);
+        }
+    }
+    return peaks;
+}
+
+vector<double> getFreqBins(int numSamples, double sampleInterval) {
+    vector<double> freqBins(numSamples);
+    for (int i = 0; i < numSamples; i++) {
+        freqBins[i] = i / (numSamples * sampleInterval); //TODO make sure this is correct
+    }
+    return freqBins;
 }
 
 double findClosest(double freq) {
@@ -198,15 +213,16 @@ int main() {
         // Compute FFT of waveform
         vector<complex<double>> fftResult = fft(waveform);
 
-        vector<double> realResult = abs(fftResult);
+        vector<double> realResult = abs(fftResult); //TODO this may not work
         int mid = realResult.size() / 2;
         vector<double> posResult(realResult.begin(), realResult.begin() + mid);
-        vector<double> freqBins = {}; //TODO implement this
+        vector<double> freqBins = getFreqBins(numSamples, duration/numSamples);
+        vector<double> posFreqBins(freqBins.begin(),freqBins.begin() + mid);
 
-        vector<int> peakIndices = fftFindPeaks(posResult);
+        vector<int> peakIndices = fftFindPeaks(posResult, 100); // TODO adjust threshold
         vector<double> peakFrequencies;
-        for (int i = 0; i < peakIndices.size(); i++) {
-            peakFrequencies.push_back(posResult[peakIndices[i]]);
+        for (int k = 0; k < peakIndices.size(); k++) {
+            peakFrequencies.push_back(posFreqBins[peakIndices[k]]);
         }
 
         // ----------------------------------------------------
