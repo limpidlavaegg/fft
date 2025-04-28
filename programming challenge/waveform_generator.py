@@ -25,18 +25,18 @@ waveform_list = []
 
 # lists of frequencies in Hz of sine waves to add together and sample
 # For example, [60, 90] would generate the sum of sin(2pi * 60 * t) and sin(2pi * 90 * t), 60Hz and 90Hz waves
-waveform_list.append([220.0, 261.626, 329.628])
+waveform_list.append([739.989, 987.767, 1244.508])
 
 # Number of evenly spaced samples to take of the composite waveform over the chosen time interval
 # For example, 100 samples over a 10-second interval would result in 10 samples per second
 # This number should be quite high to get appropriate waveform resolution
 # It should also be higher the greater the frequency or complexity of the waveform
-my_num_samples = 1024
+my_num_samples = 2048
 
 # Duration to sample the waveform
 # For high frequency waveforms, this can be quite short
 # for very low frequency waveforms, may want to sample a longer duration to capture periodicity
-my_duration = 0.1
+my_duration = 0.2
 
 # Get resultant samples of waveform from above parameters
 
@@ -44,7 +44,7 @@ result_list = []
 for freqs in waveform_list:
     result_list.append(waveform_generator(freqs, my_num_samples, my_duration))
 
-with open('testcases/test.in.2', 'w') as f:
+with open('testcases/test.in.4', 'w') as f:
     f.write(f"{len(result_list)} {my_num_samples} {my_duration:.1f}\n")
     for result in result_list:
         for sample in result:
