@@ -49,7 +49,7 @@ waveform_list = []
 
 # waveform_list.append([1108.731, 1661.219, 2793.826])
 
-num_waveforms = 50
+num_waveforms = 3
 for i in range(num_waveforms):
     root = note_frequencies[random.randint(0, 11)] # get random root
     chord_type = random.randint(0, 2)
@@ -69,20 +69,22 @@ for i in range(num_waveforms):
     else:
         root = root / 4
     """
-    waveform_list.append([root, root * perf_fourth, root * perf_fourth * first_third])
-    waveform_list.append([root, root * second_third, root * perf_fourth * second_third])
+    waveform_list.append([root * 2, root * perf_fourth, root * perf_fourth * first_third * 2])
+    waveform_list.append([root / 2, root * second_third * 4, root * perf_fourth * second_third])
+    waveform_list.append([root / 2, root * first_third, root * first_third * second_third * 2])
+    waveform_list.append([root, root * first_third * 2, root * first_third * second_third])
 
 
 # Number of evenly spaced samples to take of the composite waveform over the chosen time interval
 # For example, 100 samples over a 10-second interval would result in 10 samples per second
 # This number should be quite high to get appropriate waveform resolution
 # It should also be higher the greater the frequency or complexity of the waveform
-my_num_samples = 4096
+my_num_samples = 262144
 
 # Duration to sample the waveform
 # For high frequency waveforms, this can be quite short
 # for very low frequency waveforms, may want to sample a longer duration to capture periodicity
-my_duration = 0.5
+my_duration = 5
 
 # Get resultant samples of waveform from above parameters
 
@@ -90,7 +92,7 @@ result_list = []
 for freqs in waveform_list:
     result_list.append(waveform_generator(freqs, my_num_samples, my_duration))
 
-with open('testcases/test.in.14', 'w') as f:
+with open('testcases/test.in.18', 'w') as f:
     f.write(f"{len(result_list)} {my_num_samples} {my_duration:.1f}\n")
     for result in result_list:
         for sample in result:
