@@ -80,7 +80,6 @@ vector<complex<double>> fft(vector<complex<double>> in) {
 }
 
 vector<int> fftFindPeaks(vector<double> signal, int threshold) {
-    // TODO - does this work?
     vector<int> peaks;
     for (int i = 1; i < signal.size() - 1; i++) {
         if (signal[i] > signal[i - 1] && signal[i] > signal[i + 1] && signal[i] > threshold) {
@@ -209,8 +208,6 @@ int main() {
             cin >> sample;
             waveform[j] = complex<double>(sample, 0);
         }
-
-        printf("Read in waveform %d", i);
 
         // Compute FFT of waveform
         vector<complex<double>> fftResult = fft(waveform);
