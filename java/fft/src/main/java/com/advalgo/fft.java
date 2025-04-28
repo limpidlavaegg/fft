@@ -15,7 +15,7 @@ public class fft {
             return in;
         }
 
-        // Split array into odd and even indices for divide and conquer
+        // Split array into odd and even indices to calculate a DFT via divide-and-conquer
         int half_n = n / 2;
         // Init arrays for storing values at the odd and even indices
         Complex[] odds = new Complex[half_n];
@@ -23,7 +23,7 @@ public class fft {
         // Counters to keep track of the cur index in odds and evens
         int odds_i = 0;
         int evens_i = 0;
-        // Split in by iterating over all values, and storing into odds or evens depending on cur index
+        // Split the input data by iterating over all values, and storing into odds or evens depending on cur index
         for (int i = 0; i < n; i++) {
             if (i % 2 == 0) {
                 evens[evens_i] = in[i];
@@ -35,7 +35,7 @@ public class fft {
             }
         }
 
-        // Recursively calculate the DFT on odds and evens separately
+        // Recursively calculate the DFT on odds and evens separately, we will merge the results below
         odds = fft(odds);
         evens = fft(evens);
 
@@ -44,6 +44,7 @@ public class fft {
         Complex[] ret = new Complex[n];
         for (int i = 0; i < half_n; i++) {
             // Calc. twiddle factor: exp(-2im*pi*i/n)
+            // Here, the complex number that forms the baseline for the factor has no rational component and only an imaginary component
             Complex factor = new Complex(0, (-2.0 * Math.PI * i) / n);
             factor = factor.exp().multiply(odds[i]);
             // Front half of the result: evens_i + exp(-2im*pi*i/n) * odds_i
